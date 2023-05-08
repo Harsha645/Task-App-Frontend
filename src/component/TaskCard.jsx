@@ -5,17 +5,17 @@ import { RiCloseCircleLine } from 'react-icons/ri'
 import StatesIcon from './StatesIcon'
 import CommonButton from './CommonButton'
 import moment from 'moment'
-import axios from 'axios'
+import axios, { Axios } from 'axios'
 
 
 const TaskCard = (props) => {
-  const { id, title, description, dueDate, states,loadTasks } = props
+  const { id, title, description, dueDate, states, loadTasks } = props
 
   const deleteTask = () => {
     if (confirm("Are You Sure ?")) {
       axios.delete("http://localhost:5000/" + id)
         .then(res => {
-          if(res.status===200) {
+          if (res.status === 200) {
             alert("Task Deleted!")
             loadTasks()
           }
@@ -23,6 +23,21 @@ const TaskCard = (props) => {
         .catch(err => console.log(err))
     }
 
+  }
+  const updateAsDone = async() => {
+    await axios.put("http://localhost:5000", {
+      _id: id,
+      title: "title",
+      description: "description",
+      dueDate: "dueDate",
+      status: "done"
+    })
+      .then(res => {
+        if (res.status === 200) {
+          loadTasks()
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   return (
@@ -54,7 +69,7 @@ const TaskCard = (props) => {
         </div>
       </div>
       <div className='flex justify-evenly items-center pt-4'>
-        <CommonButton title={"Mark as done"} width={"w-60"} bgColor={"bg-green-600"} bgHoverColor={""} borderColor={"border-green-700"} hoverBorderColor={"border-sky-800"} />
+        <CommonButton title={"Mark as done"} width={"w-60"} bgColor={"bg-green-600"} bgHoverColor={""} borderColor={"border-green-700"} hoverBorderColor={"border-sky-800"} onClick={() => updateAsDone()} />
         <CommonButton title={"Mark as cancel"} width={"w-60"} bgColor={"bg-red-600"} bgHoverColor={""} borderColor={"border-red-700"} hoverBorderColor={"border-sky-800"} />
       </div>
 

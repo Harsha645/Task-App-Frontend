@@ -20,7 +20,6 @@ function App() {
 
   useEffect(() => {
     loadTasks()
-    console.log(tasks);
   }, [])
 
   return (
