@@ -35,7 +35,7 @@ function App() {
         />
       </div>
       <div>
-        {addButtonStatus && <TaskSaveCard />}
+        {addButtonStatus && <TaskSaveCard loadTasks ={()=> loadTasks()}/>}
       </div>
 
       <div className='space-y-5'>

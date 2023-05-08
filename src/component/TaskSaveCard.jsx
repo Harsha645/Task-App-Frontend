@@ -6,7 +6,8 @@ import axios from 'axios'
 
 
 
-const TaskSaveCard = () => {
+const TaskSaveCard = (props) => {
+  const { loadTasks } = props
   const [newTask, setNewTask] = useState({ status: "n/a" })
 
   const handleChange = (event) => {
@@ -16,12 +17,13 @@ const TaskSaveCard = () => {
   }
   const saveTask = () => {
     axios.post("http://localhost:5000",newTask)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+    .then(res => {
+      if (res.status === 200) {
+        //alert("Task Saved");
+        loadTasks();
+      }
+    })
+    .catch(err => console.log(err))
 
   }
 

@@ -24,14 +24,30 @@ const TaskCard = (props) => {
     }
 
   }
+  const updateAsCancel = async() => {
+    await axios.put("http://localhost:5000/"+id, {
+      //_id: id,
+      title: "title",
+      description: "description",
+      dueDate: "dueDate",
+      status: "cancel"
+    })
+      .then(res => {
+        if (res.status === 200) {
+          loadTasks()
+        }
+      })
+      .catch(err => console.log(err))
+  }
   const updateAsDone = async() => {
-    await axios.put("http://localhost:5000", {
-      _id: id,
+    await axios.put("http://localhost:5000/"+id, {
+      //_id: id,
       title: "title",
       description: "description",
       dueDate: "dueDate",
       status: "done"
     })
+    
       .then(res => {
         if (res.status === 200) {
           loadTasks()
@@ -70,7 +86,7 @@ const TaskCard = (props) => {
       </div>
       <div className='flex justify-evenly items-center pt-4'>
         <CommonButton title={"Mark as done"} width={"w-60"} bgColor={"bg-green-600"} bgHoverColor={""} borderColor={"border-green-700"} hoverBorderColor={"border-sky-800"} onClick={() => updateAsDone()} />
-        <CommonButton title={"Mark as cancel"} width={"w-60"} bgColor={"bg-red-600"} bgHoverColor={""} borderColor={"border-red-700"} hoverBorderColor={"border-sky-800"} />
+        <CommonButton title={"Mark as cancel"} width={"w-60"} bgColor={"bg-red-600"} bgHoverColor={""} borderColor={"border-red-700"} hoverBorderColor={"border-sky-800"} onClick={() => updateAsCancel()}/>
       </div>
 
     </div>
