@@ -8,6 +8,9 @@ import moment from 'moment'
 import axios, { Axios } from 'axios'
 
 
+
+
+
 const TaskCard = (props) => {
   const { id, title, description, dueDate, states, loadTasks } = props
 
@@ -24,14 +27,17 @@ const TaskCard = (props) => {
     }
 
   }
-  const updateAsCancel = async() => {
-    await axios.put("http://localhost:5000/"+id, {
-      //_id: id,
-      title: "title",
-      description: "description",
-      dueDate: "dueDate",
-      status: "cancel"
-    })
+  const updateAsCancel = async () => {
+    await axios.put("http://localhost:5000/" + id,
+        {
+          _id: id,
+          title: title,
+          description: description,
+          dueDate: dueDate,
+          status: "cancel"
+        }
+      
+    )
       .then(res => {
         if (res.status === 200) {
           loadTasks()
@@ -39,22 +45,51 @@ const TaskCard = (props) => {
       })
       .catch(err => console.log(err))
   }
-  const updateAsDone = async() => {
-    await axios.put("http://localhost:5000/"+id, {
-      //_id: id,
-      title: "title",
-      description: "description",
-      dueDate: "dueDate",
-      status: "done"
-    })
-    
-      .then(res => {
-        if (res.status === 200) {
-          loadTasks()
+
+
+  // const updateAsDone = async() => {
+  //   await axios.put("http://localhost:5000/"+ id, {
+  //     _id: id,
+  //     title: "title",
+  //     description: "description",
+  //     dueDate: "dueDate",
+  //     status: "done"
+  //   })
+
+  //     .then(res => {
+  //       if (res.status === 200) {
+  //         loadTasks()
+  //       }
+  //     })
+  //     .catch(err => console.log(err))
+  // }
+
+  const updateAsDone = async () => {
+    if (!id) {
+      console.log("ID is not defined");
+      return;
+    }
+
+    try {
+      const response = await axios.put(`http://localhost:5000/${id}`,
+        {
+          _id: id,
+          title: title,
+          description: description,
+          dueDate: dueDate,
+          status: "done"
+
         }
-      })
-      .catch(err => console.log(err))
-  }
+      );
+
+      if (response.status === 200) {
+        console.log("Task updated successfully");
+        loadTasks();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className='relative mt-5 p-5 border-2 border-neutral-900 shadow-2xl hover:scale-105 transition delay-75'>
@@ -86,7 +121,7 @@ const TaskCard = (props) => {
       </div>
       <div className='flex justify-evenly items-center pt-4'>
         <CommonButton title={"Mark as done"} width={"w-60"} bgColor={"bg-green-600"} bgHoverColor={""} borderColor={"border-green-700"} hoverBorderColor={"border-sky-800"} onClick={() => updateAsDone()} />
-        <CommonButton title={"Mark as cancel"} width={"w-60"} bgColor={"bg-red-600"} bgHoverColor={""} borderColor={"border-red-700"} hoverBorderColor={"border-sky-800"} onClick={() => updateAsCancel()}/>
+        <CommonButton title={"Mark as cancel"} width={"w-60"} bgColor={"bg-red-600"} bgHoverColor={""} borderColor={"border-red-700"} hoverBorderColor={"border-sky-800"} onClick={() => updateAsCancel()} />
       </div>
 
     </div>
